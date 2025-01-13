@@ -1,0 +1,36 @@
+# Имя исполняемого файла
+NAME = get_next_line
+
+# Компилятор и флаги
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -ggdb -fsanitize=address
+
+# Файлы
+SRCS = get_next_line.c get_next_line_utils.c
+OBJS = $(SRCS:.c=.o)
+HEADER = get_next_line.h
+
+# Правило по умолчанию
+all: $(NAME)
+
+# Сборка исполняемого файла
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+# Пересборка объектных файлов при изменении заголовочного файла
+%.o: %.c $(HEADER)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Удаление объектных файлов
+clean:
+	rm -f $(OBJS)
+
+# Полная очистка (удаление объектных файлов и исполняемого файла)
+fclean: clean
+	rm -f $(NAME)
+
+# Пересборка проекта
+re: fclean all
+
+# Указываем, что эти цели не связаны с реальными файлами
+.PHONY: all clean fclean re
