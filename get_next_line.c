@@ -6,7 +6,7 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 16:12:22 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/01/13 18:44:02 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/01/15 14:30:52 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,28 @@
 
 static void	free_ptr(char **str)
 {
-	free(*str);
-	*str = NULL;
+	if (str && *str)
+	{
+		free(*str);
+		*str = NULL;
+	}
 }
+
+static int	check_buffer(char **buffer)
+{
+	if (!*buffer)
+	{
+		*buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		if (!*buffer)
+			return (0);
+		**buffer = '\0';
+	}
+	return (1);
+}
+
 int	ft_strlen(const char *s)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s[i])
@@ -29,65 +45,80 @@ int	ft_strlen(const char *s)
 
 ssize_t	ft_read_line(int fd, char **buffer)
 {
-    char    *temp;
-    ssize_t bytes_read;
+	char	*temp;
+	ssize_t	bytes_read;
+	char	*new_buffer;
 
-	temp = (char *)malloc(sizeof(char *) * (BUFFER_SIZE + 1));
-    bytes_read = read(fd, temp, BUFFER_SIZE);
-    if (bytes_read > 0)
-    {
-        temp[bytes_read] = '\0';
-        char *new_buffer = ft_strjoin(*buffer, temp);                          
-        free_ptr(buffer);
-        *buffer = new_buffer;
-    }
+	temp = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!temp)
+		return (-1);
+	bytes_read = read(fd, temp, BUFFER_SIZE);
+	if (bytes_read <= 0)
+	{
+		free(temp);
+		if (bytes_read == -1)
+		{
+			free_ptr(buffer);
+			return (-1);
+		}
+		return (0);
+	}
+	temp[bytes_read] = '\0';
+	new_buffer = ft_strjoin(*buffer, temp);
 	free(temp);
-    return (bytes_read);
+	if (!new_buffer)
+		return (-1);
+	free_ptr(buffer);
+	*buffer = new_buffer;
+	return (bytes_read);
 }
 
-
-char *extract_line(char **buffer, char *newline_pos)
+char	*extract_line(char **buffer, char *newline_pos)
 {
-    char *line;
-    char *temp;
+	char	*line;
+	char	*temp;
 
-    line = ft_substr(*buffer, 0, newline_pos - *buffer + 1);
-    if (!line)
+	line = ft_substr(*buffer, 0, newline_pos - *buffer + 1);
+	if (!line)
 		return (NULL);
 	temp = ft_strdup(newline_pos + 1);
 	if (!temp)
+	{
+		free(line);
+		free_ptr(buffer);
 		return (NULL);
-    free_ptr(buffer);
-    *buffer = temp;
-    return (line);
+	}
+	free_ptr(buffer);
+	*buffer = temp;
+	return (line);
 }
 
-
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-    static char *buffer;
-    char *line;
-    char *newline_pos;
+	static char	*buffer;
+	char		*line;
+	char		*newline_pos;
 
-    if (fd < 0 || BUFFER_SIZE <= 0)
-        return (NULL);
-    if (!buffer && !(buffer = ft_strdup("")))
-        return (NULL);
-    while (1)
-    {
-        if ((newline_pos = ft_strchr(buffer, '\n')))
-            return (extract_line(&buffer, newline_pos));
-        if (ft_read_line(fd, &buffer) <= 0)
-            break;
-    }
-    if (buffer && *buffer)
-    {
-        line = ft_strdup(buffer);
-        free_ptr(&buffer);
-        return (line);
-    }
-    system("leaks get_next_line");
-    return (NULL);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (!check_buffer(&buffer))
+		return (NULL);
+	while (1)
+	{
+		newline_pos = ft_strchr(buffer, '\n');
+		if ((newline_pos))
+			return (extract_line(&buffer, newline_pos));
+		if (ft_read_line(fd, &buffer) <= 0)
+			break ;
+	}
+	if (buffer && *buffer)
+	{
+		line = ft_strdup(buffer);
+		free_ptr(&buffer);
+		return (line);
+	}
+	free_ptr(&buffer);
+	return (NULL);
 }
 
 // int main(int argc, char **argv)

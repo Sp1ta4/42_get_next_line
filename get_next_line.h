@@ -6,23 +6,21 @@
 /*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 16:14:42 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/01/13 17:31:52 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/01/15 14:35:06 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_GET_NEXT_LINE_H
-# define FT_GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-#ifndef BUFFER_SIZE
-#define BUFFER_SIZE 1000000
-#endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
 
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include <limits.h>
-
-#include <stdio.h>
 
 char	*get_next_line(int fd);
 int		ft_strlen(const char *s);
