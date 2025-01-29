@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
+/*   By: ggevorgi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 16:14:39 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/01/19 21:03:08 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/01/29 20:22:05 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,6 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)s);
 	else
 		return (NULL);
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t dsize)
-{
-	size_t	i;
-
-	i = 0;
-	if (dsize)
-	{
-		while (i < (dsize - 1) && src[i])
-		{
-			dst[i] = src[i];
-			++i;
-		}
-		dst[i] = '\0';
-	}
-	return (ft_strlen(src));
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -88,6 +71,16 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	res[i] = '\0';
 	return (res);
+}
+
+int	ft_strlen(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }
 
 char	*ft_strdup(const char *s)

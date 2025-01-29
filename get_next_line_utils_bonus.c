@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggevorgi <sp1tak.gg@gmail.com>             +#+  +:+       +#+        */
+/*   By: ggevorgi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 16:14:39 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/01/19 20:36:23 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/01/29 20:21:58 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,14 @@ char	*ft_strchr(const char *s, int c)
 		return (NULL);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dsize)
+int	ft_strlen(const char *s)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	if (dsize)
-	{
-		while (i < (dsize - 1) && src[i])
-		{
-			dst[i] = src[i];
-			++i;
-		}
-		dst[i] = '\0';
-	}
-	return (ft_strlen(src));
+	while (s[i])
+		i++;
+	return (i);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
