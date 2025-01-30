@@ -6,7 +6,7 @@
 /*   By: ggevorgi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 16:12:22 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/01/29 20:20:06 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/01/30 11:00:16 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,24 +35,19 @@ static int	check_buffer(char **buffer)
 
 ssize_t	ft_read_line(int fd, char **buffer)
 {
-	char	*temp;
+	char	temp[BUFFER_SIZE + 1];
 	ssize_t	bytes_read;
 	char	*new_buffer;
 
-	temp = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!temp)
-		return (-1);
 	bytes_read = read(fd, temp, BUFFER_SIZE);
 	if (bytes_read <= 0)
 	{
-		free(temp);
 		if (bytes_read == -1)
 			free_ptr(buffer);
 		return (0);
 	}
 	temp[bytes_read] = '\0';
 	new_buffer = ft_strjoin(*buffer, temp);
-	free(temp);
 	if (!new_buffer)
 		return (-1);
 	free_ptr(buffer);

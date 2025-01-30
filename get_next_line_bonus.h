@@ -6,7 +6,7 @@
 /*   By: ggevorgi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 16:14:42 by ggevorgi          #+#    #+#             */
-/*   Updated: 2025/01/29 20:21:44 by ggevorgi         ###   ########.fr       */
+/*   Updated: 2025/01/30 11:02:14 by ggevorgi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_BONUS_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 100
 # endif
 
 # include <unistd.h>
